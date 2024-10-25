@@ -1,7 +1,5 @@
-codes/
 venv/
-
 __pycache__/
 *.pyc
-
 .DS_Store
+remember.txt

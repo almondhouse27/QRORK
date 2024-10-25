@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QRORK - QR Code Generator</title>
+    <style>
+        body {
+            background-color: #EAEAEA;
+        }
+        nav {
+            background-color: #272727;
+            overflow: hidden;
+            padding-top: 2px;
+            padding-bottom: 4px;
+            text-align: center;
+            margin: auto;
+            margin-bottom: 32px;
+            width: 85%;
+        }
+        nav a {
+            border-radius: 4px;
+            color: rgb(207, 207, 207);
+            padding: 12px 18px;
+            margin-left: 6px;
+            margin-right: 6px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        nav a:hover {
+            color: white;
+            background-color: #454545;
+            box-shadow: inset 2px 3px 2px #272727;
+        }
+
+        .container {
+            background-color: #FEFFFF;
+            box-shadow: inset 1px 2px 1px 2px #545454;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            margin: auto;
+            padding: 16px;
+            width: 83%;
+        }
+
+        .form-container {
+            float: left;
+            margin-left: 32px;
+            padding: 4px;
+            width: 40%;
+        }
+        .form-container form {
+            display: flex;
+            flex-direction: column;
+            margin: 8px;
+        }
+        .form-container label {
+            padding: 2px;
+            margin-bottom: 4px;
+        }
+        .form-container input {
+            padding: 2px;
+            margin-bottom: 8px;
+        }
+        .image-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-right: 32px;
+            padding: 4px;
+            width: 40%;
+        }
+        .image-container img {
+            opacity: 0.88;
+        }
+        .radio-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 8px;
+            margin-right: 16px;
+        }
+        .radio-row input[type="radio"],
+        .radio-row label {
+            cursor: pointer;
+            flex: 1;
+        }
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .button-container input {
+            margin: 16px;
+        }
+        .btn {
+            background-color: #272727;
+            border-radius: 4px;
+            color: rgb(207, 207, 207);
+            cursor: pointer;
+            font-family: monospace, 'Courier New', Courier;
+            height: 38px;
+            width: 100px;
+        }
+        .btn:hover {
+            color: white;
+            background-color: #454545;
+            box-shadow: inset 1px 2px 1px #363636;
+        }
+        .txt-lbl {
+            font-family: monospace, 'Courier New', Courier;
+            font-size: 1.125rem;
+        }
+        .pad24 {
+            margin-bottom: 24px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Simple Navbar -->
+    <nav>
+        <a href="/">Tool</a>
+        <a href="/about">About</a>
+        <a href="/store">Store</a>
+        <a href="https://github.com/almondhouse27/QRORK" target="_blank">Code</a>
+    </nav>
+
+    <div class="container">
+        <!-- Form Floating Left -->
+        <div class="form-container">
+            <form>
+                <hr class="pad24">
+
+                <label for="url" class="txt-lbl">URL:</label>
+                <input type="text" id="url" name="url" placeholder="Enter URL">
+
+                <hr class="pad24">
+
+                <label for="file-name" class="txt-lbl">File Name:</label>
+                <input type="text" id="file-name" name="file-name" placeholder="Enter File Name" class="pad24">
+                
+                <hr class="pad24">
+
+                <label for="export-format" class="txt-lbl">Export Format:</label>
+                <div id="export-format">
+                    <!-- First row of radio buttons -->
+                    <div class="radio-row">
+
+                        <input type="radio" id="png" name="export-format" value="PNG">
+                        <label for="png">PNG</label>
+        
+                        <input type="radio" id="jpeg" name="export-format" value="JPEG">
+                        <label for="jpeg">JPEG</label>
+        
+                        <input type="radio" id="bmp" name="export-format" value="BMP">
+                        <label for="bmp">BMP</label>
+                    </div>
+        
+                    <!-- Second row of radio buttons -->
+                    <div class="radio-row">
+                        <input type="radio" id="gif" name="export-format" value="GIF">
+                        <label for="gif">GIF</label>
+        
+                        <input type="radio" id="tiff" name="export-format" value="TIFF">
+                        <label for="tiff">TIFF</label>
+        
+                        <input type="radio" id="webp" name="export-format" value="WEBP">
+                        <label for="webp">WEBP</label>
+                    </div>
+                </div>
+
+                <hr class="pad24">
+        
+                <div class="button-container">
+                    <input type="submit" value="Submit" class="btn">
+                    <input type="button" value="Clear" class="btn" onclick="clearForm()">
+                    <input type="button" value="Preview" class="btn" onclick="preview()">
+                </div>
+                
+            </form>
+        </div>
+
+        <!-- Image Floating Right -->
+        <div class="image-container">
+            <img src="/static/concept-art/caveman-barry.png" 
+                 alt="Caveman Barry, a prehistoric character depicted in a rugged, natural setting, showcasing his primitive attire and tools, evoking a sense of adventure and survival."
+                 width="100%"
+                 >
+        </div>
+    </div>
+
+</body>
+</html>
+
