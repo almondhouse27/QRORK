@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <style>
         body {
-            background-color: #df9f7f;
+            background-color: #f18850;
         }
         nav {
             background-color: #272727;
@@ -22,7 +22,7 @@
         }
         nav a {
             border-radius: 4px;
-            color: rgb(207, 207, 207);
+            color: rgb(189, 189, 189);
             padding: 12px 18px;
             letter-spacing: 3px;
             margin-left: 6px;
@@ -36,9 +36,13 @@
             background-color: #454545;
             box-shadow: inset 2px 3px 2px #272727;
         }
-
+        h1 {
+            font-size: 1.6rem;
+            font-family: monospace, 'Courier New', Courier;
+            margin-bottom: 32px;
+            text-align: center;
+        }
         .container {
-            background-color: #FEFFFF;
             box-shadow: inset 1px 2px 1px 2px rgba(84, 84, 84, 0.84);
             border-radius: 6px;
             display: flex;
@@ -46,12 +50,21 @@
             margin: auto;
             padding: 16px;
             width: 80%;
+            background-image: url('/static/concept-art/qr-pattern.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-color: rgba(254, 255, 255, 0.85);
+            background-blend-mode: overlay;
         }
         .form-container {
             float: left;
             margin-left: 32px;
             padding: 4px;
             width: 40%;
+            background-color: rgba(189, 189, 189, .2);
+            border-radius: 4px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
         }
         .form-container form {
             display: flex;
@@ -72,9 +85,9 @@
             margin-right: 32px;
             padding: 4px;
             width: 40%;
-        }
-        .image-container img {
-            opacity: 0.88;
+            background-color: rgba(189, 189, 189, .2);
+            border-radius: 4px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
         }
         .radio-row {
             display: flex;
@@ -128,9 +141,6 @@
             color: rgb(207, 207, 207);
             padding-left: 32px;
         }
-        .guide-container p:hover {
-            color: white;
-        }
         .howto {
             font-size: 1.05rem;
             text-align: center;
@@ -165,16 +175,17 @@
     <div class="container">
         <!-- Form Floating Left -->
         <div class="form-container">
-            <form>
-                <hr class="pad24">
+            <form method="POST" action="/" enctype="multipart/form-data">
+                <!-- <hr class="pad24"> -->
+                <h1>QR Code Generator</h1>
                 
                 <label for="url" class="txt-lbl">URL:</label>
-                <input type="text" id="url" name="url" placeholder="http://qrork.com">
+                <input type="text" id="url" name="url" placeholder="http://qrork.com" required>
 
                 <hr class="pad24">
 
                 <label for="file-name" class="txt-lbl">File Name:</label>
-                <input type="text" id="file-name" name="file-name" placeholder="QRORK-qrcode" class="pad24">
+                <input type="text" id="file-name" name="file-name" placeholder="QRORK-qrcode" class="pad24" required>
                 
                 <hr class="pad24">
 
@@ -183,7 +194,7 @@
                     <!-- First row of radio buttons -->
                     <div class="radio-row">
 
-                        <input type="radio" id="png" name="export-format" value="PNG">
+                        <input type="radio" id="png" name="export-format" value="PNG" required>
                         <label for="png">PNG</label>
         
                         <input type="radio" id="jpeg" name="export-format" value="JPEG">
@@ -206,11 +217,11 @@
                     </div>
                 </div>
 
-                <hr class="pad24">
+                <hr>
         
                 <div class="button-container">
                     <input type="submit" value="Submit" class="btn" onclick="submit()">
-                    <input type="button" value="Preview" class="btn" onclick="preview()">
+                    <input type="submit" value="Preview" class="btn" onclick="preview()">
                     <input type="button" value="Clear" class="btn" onclick="clearForm()">
                 </div>
                 
@@ -219,7 +230,7 @@
 
         <!-- Image Floating Right -->
         <div class="image-container">
-            <img src="/static/concept-art/caveman-barry.png" 
+            <img src="/static/concept-art/caveman-barry-removebg.png" 
                  alt="Caveman Barry, a prehistoric character depicted in a rugged, natural setting, showcasing his primitive attire and tools, evoking a sense of adventure and survival."
                  width="100%"
             >
@@ -243,6 +254,17 @@
         </div>
     </div>
 
+    <!-- JavaScript for Form -->
+    <script>
+        function clearForm() {
+            document.getElementById('url').value = '';
+            document.getElementById('file-name').value = '';
+            const radioButtons = document.querySelectorAll('input[name="export-format"]');
+            radioButtons.forEach((radio) => {
+                radio.checked = false;
+            });
+        }
+    </script>
 </body>
 </html>
 

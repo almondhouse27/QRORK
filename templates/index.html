@@ -7,8 +7,6 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
-
-    <!-- Simple Navbar -->
     <nav>
         <a href="/">Tool</a>
         <a href="/about">About</a>
@@ -17,54 +15,82 @@
     </nav>
 
     <div class="container">
+
         <!-- Form Floating Left -->
         <div class="form-container">
-            <form>
-                <hr class="pad24">
+            <form method="POST" action="/" enctype="multipart/form-data">
+                <h1>QR Code Generator</h1>
                 
                 <label for="url" class="txt-lbl">URL:</label>
-                <input type="text" id="url" name="url" placeholder="http://qrork.com">
+                <input 
+                    type="text" 
+                    id="url" 
+                    name="url" 
+                    placeholder="http://qrork.com" 
+                    value="{{ url }}" 
+                    required
+                >
 
                 <hr class="pad24">
 
                 <label for="file-name" class="txt-lbl">File Name:</label>
-                <input type="text" id="file-name" name="file-name" placeholder="QRORK-qrcode" class="pad24">
+                <input 
+                    type="text" 
+                    id="file-name" 
+                    name="file-name" 
+                    placeholder="QRORK-qrcode" 
+                    class="pad24" 
+                    value="{{ file_name}}" 
+                    required
+                >
                 
                 <hr class="pad24">
 
-                <label for="export-format" class="txt-lbl">Export Format:</label>
-                <div id="export-format">
+                <fieldset>
+                    <legend class="txt-lbl">Export Format:</legend>
+
                     <!-- First row of radio buttons -->
                     <div class="radio-row">
-
-                        <input type="radio" id="png" name="export-format" value="PNG">
+                        <input type="radio" id="png" name="export-format" value="PNG" 
+                               {% if export_format == 'PNG' %}checked{% endif %} required
+                        >
                         <label for="png">PNG</label>
-        
-                        <input type="radio" id="jpeg" name="export-format" value="JPEG">
+                
+                        <input type="radio" id="jpeg" name="export-format" value="JPEG"
+                               {% if export_format == 'JPEG' %}checked{% endif %}
+                        >
                         <label for="jpeg">JPEG</label>
-        
-                        <input type="radio" id="bmp" name="export-format" value="BMP">
+                
+                        <input type="radio" id="bmp" name="export-format" value="BMP"
+                               {% if export_format == 'BMP' %}checked{% endif %}
+                        >
                         <label for="bmp">BMP</label>
                     </div>
-        
+                
                     <!-- Second row of radio buttons -->
                     <div class="radio-row">
-                        <input type="radio" id="gif" name="export-format" value="GIF">
+                        <input type="radio" id="gif" name="export-format" value="GIF"
+                               {% if export_format == 'GIF' %}checked{% endif %}
+                        >
                         <label for="gif">GIF</label>
-        
-                        <input type="radio" id="tiff" name="export-format" value="TIFF">
+                
+                        <input type="radio" id="tiff" name="export-format" value="TIFF"
+                               {% if export_format == 'TIFF' %}checked{% endif %}
+                        >
                         <label for="tiff">TIFF</label>
-        
-                        <input type="radio" id="webp" name="export-format" value="WEBP">
+                
+                        <input type="radio" id="webp" name="export-format" value="WEBP"
+                               {% if export_format == 'WEBP' %}checked{% endif %}
+                        >
                         <label for="webp">WEBP</label>
                     </div>
-                </div>
+                </fieldset>
 
-                <hr class="pad24">
+                <hr>
         
                 <div class="button-container">
-                    <input type="submit" value="Submit" class="btn" onclick="submit()">
-                    <input type="button" value="Preview" class="btn" onclick="preview()">
+                    <input type="submit" name="submit" value="Submit" class="btn">
+                    <input type="submit" name="preview" value="Preview" class="btn">
                     <input type="button" value="Clear" class="btn" onclick="clearForm()">
                 </div>
                 
@@ -73,7 +99,7 @@
 
         <!-- Image Floating Right -->
         <div class="image-container">
-            <img src="/static/concept-art/caveman-barry.png" 
+            <img src="/static/concept-art/caveman-barry-removebg.png" 
                  alt="Caveman Barry, a prehistoric character depicted in a rugged, natural setting, showcasing his primitive attire and tools, evoking a sense of adventure and survival."
                  width="100%"
             >
@@ -82,21 +108,75 @@
 
     <!-- Footer How-To Guide -->
     <div class="guide-container">
-        <div>
-            <p>
-                
-                <p class="howto">
-                    <span class="guide">Guide</span><br>
-                    Enter a valid URL starting with http:// or https://, up to 512 characters.
-                    Use only letters, numbers, spaces, underscores, hyphens, and periods for the file name.
-                </p>
+        <div> 
+            <p class="howto">
+                Enter a valid URL starting with http:// or https:// that is up to 512 characters.
+                Use only letters, numbers, spaces, underscores, hyphens, and periods for the file name.
             </p>
         </div>
         <div class="credits">
-            <p>&copy;2024 Almond House Publishing, LLC. All rights reserved.</p>
+            <p>
+                www.QRORK.com |
+                &copy;2024 Almond House Publishing, LLC | 
+                All rights reserved.
+            </p>
         </div>
     </div>
 
+    <!-- Preview Modal -->
+    <div id="preview-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <img id="preview_image" src="" alt="QR Code Preview" />
+        </div>
+    </div>
+
+    <!-- Flash Message Area -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash">
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+<!-- JavaScript for App -->
+<script>
+
+// when clear button is clicked
+function clearForm() {
+    document.getElementById('url').value = '';
+    document.getElementById('file-name').value = '';
+    const radioButtons = document.querySelectorAll('input[name="export-format"]');
+    radioButtons.forEach((radio) => {
+        radio.checked = false;
+    });
+}
+
+// required for modal
+function openModal(image_url) {
+    const modal = document.getElementById("preview-modal");
+    const previewImage = document.getElementById("preview_image");
+    previewImage.src = image_url; // Set the image source
+    modal.style.display = "block";
+}
+function closeModal() {
+    const modal = document.getElementById("preview-modal");
+    modal.style.display = "none";
+}
+
+// attach openModal to the flash message area
+window.onload = function() {
+    const flash_message = document.querySelector('.flash');
+    if (flash_message) {
+        const image_url = flash_message.innerText.split(": ")[1];
+        openModal(`/static/${image_url}`);
+    }
+}
+
+</script>
 </body>
 </html>
 
