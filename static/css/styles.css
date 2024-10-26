@@ -1,0 +1,144 @@
+body {
+    background-color: #df9f7f;
+}
+nav {
+    background-color: #272727;
+    overflow: hidden;
+    padding-top: 2px;
+    padding-bottom: 4px;
+    text-align: center;
+    margin: auto;
+    margin-top: 16px;
+    margin-bottom: 16px;
+    width: 85%;
+}
+nav a {
+    border-radius: 4px;
+    color: rgb(207, 207, 207);
+    padding: 12px 18px;
+    letter-spacing: 3px;
+    margin-left: 6px;
+    margin-right: 6px;
+    text-decoration: none;
+    display: inline-block;
+    width: 60px;
+}
+nav a:hover {
+    color: white;
+    background-color: #454545;
+    box-shadow: inset 2px 3px 2px #272727;
+}
+
+.container {
+    background-color: #FEFFFF;
+    box-shadow: inset 1px 2px 1px 2px rgba(84, 84, 84, 0.84);
+    border-radius: 6px;
+    display: flex;
+    justify-content: space-between;
+    margin: auto;
+    padding: 16px;
+    width: 80%;
+}
+.form-container {
+    float: left;
+    margin-left: 32px;
+    padding: 4px;
+    width: 40%;
+}
+.form-container form {
+    display: flex;
+    flex-direction: column;
+    margin: 8px;
+}
+.form-container label {
+    padding: 2px;
+    margin-bottom: 4px;
+}
+.form-container input {
+    padding: 2px;
+    margin-bottom: 8px;
+}
+.image-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 32px;
+    padding: 4px;
+    width: 40%;
+}
+.image-container img {
+    opacity: 0.88;
+}
+.radio-row {
+    display: flex;
+    justify-content: space-between;
+    margin: 8px;
+    margin-right: 16px;
+}
+.radio-row input[type="radio"],
+.radio-row label {
+    cursor: pointer;
+    flex: 1;
+}
+.button-container {
+    display: flex;
+    justify-content: space-between;
+}
+.button-container input {
+    margin: 16px;
+}
+.btn {
+    background-color: #272727;
+    border-radius: 4px;
+    color: rgb(189, 189, 189);
+    cursor: pointer;
+    font-family: monospace, 'Courier New', Courier;
+    letter-spacing: 1px;
+    height: 38px;
+    width: 100px;
+}
+.btn:hover {
+    color: white;
+    background-color: #454545;
+    box-shadow: inset 1px 2px 1px #363636;
+}
+.txt-lbl {
+    font-family: monospace, 'Courier New', Courier;
+    font-size: 1.125rem;
+}
+.pad24 {
+    margin-bottom: 24px;
+}
+.guide-container {
+    background-color: #272727;
+    clear: both;
+    margin: auto;
+    margin-top: 24px;
+    padding: 4px;
+    width: 85%;
+}
+.guide-container p {
+    color: rgb(207, 207, 207);
+    padding-left: 32px;
+}
+.guide-container p:hover {
+    color: white;
+}
+.howto {
+    font-size: 1.05rem;
+    text-align: center;
+    margin-left: 16px;
+    margin-right: 48px;
+    font-style: italic;
+}
+.guide {
+    letter-spacing: 3px;
+    font-size: 1.1rem;
+    text-decoration: underline;
+    font-style: normal;
+    padding-bottom: 8px;
+}
+.credits {
+    letter-spacing: 1px;
+    font-size: .7rem;
+    text-align: center;
+}
