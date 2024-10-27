@@ -31,7 +31,7 @@
                     required
                 >
 
-                <hr class="pad24">
+                <hr class="pad16">
 
                 <label for="file-name" class="txt-lbl">File Name:</label>
                 <input 
@@ -39,12 +39,12 @@
                     id="file-name" 
                     name="file-name" 
                     placeholder="QRORK-qrcode" 
-                    class="pad24" 
+                    class="pad16" 
                     value="{{ file_name}}" 
                     required
                 >
                 
-                <hr class="pad24">
+                <hr class="pad16">
 
                 <fieldset>
                     <legend class="txt-lbl">Export Format:</legend>
@@ -86,7 +86,32 @@
                     </div>
                 </fieldset>
 
-                <hr>
+                <hr class="pad16">
+
+                <fieldset>
+                    <legend class="txt-lbl">Colors:</legend>
+                    <div class="radio-row">
+                        <input type="radio" id="default" name="color" value="default" 
+                               {% if color == 'default' %}checked{% endif %} checked
+                        >
+                        <label for="default">DEFAULT</label>
+                
+                        <input type="radio" id="invert" name="color" value="invert"
+                               {% if color == 'invert' %}checked{% endif %}
+                        >
+                        <label for="invert">INVERT</label>
+                
+                        <input type="radio" id="jungle" name="color" value="jungle"
+                               {% if color == 'jungle' %}checked{% endif %}
+                        >
+                        <label for="jungle">JUNGLE</label>
+
+                        <input type="radio" id="bee" name="color" value="bee"
+                               {% if color == 'bee' %}checked{% endif %}
+                        >
+                        <label for="bee">BEE</label>
+                    </div>
+                </fieldset>
         
                 <div class="button-container">
                     <input type="submit" name="submit" value="Submit" class="btn">
@@ -110,13 +135,13 @@
     <div class="guide-container">
         <div> 
             <p class="howto">
-                Enter a valid URL starting with http:// or https:// that is up to 512 characters.
-                Use only letters, numbers, spaces, underscores, hyphens, and periods for the file name.
+                Enter a valid URL starting with http:// or https:// up to 512 characters<br>
+                Use only letters, numbers, spaces, underscores, hyphens, and periods for the file name
             </p>
         </div>
         <div class="credits">
             <p>
-                www.QRORK.com |
+                www.QRORK.app |
                 &copy;2024 Almond House Publishing, LLC | 
                 All rights reserved.
             </p>
@@ -131,17 +156,6 @@
         </div>
     </div>
 
-    <!-- Flash Message Area -->
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        <div class="flash">
-          {% for category, message in messages %}
-            <div class="alert alert-{{ category }}">{{ message }}</div>
-          {% endfor %}
-        </div>
-      {% endif %}
-    {% endwith %}
-
 <!-- JavaScript for App -->
 <script>
 
@@ -153,6 +167,7 @@ function clearForm() {
     radioButtons.forEach((radio) => {
         radio.checked = false;
     });
+    document.getElementById('default').checked = true;
 }
 
 // required for modal
@@ -166,15 +181,19 @@ function closeModal() {
     const modal = document.getElementById("preview-modal");
     modal.style.display = "none";
 }
-
-// attach openModal to the flash message area
 window.onload = function() {
-    const flash_message = document.querySelector('.flash');
-    if (flash_message) {
-        const image_url = flash_message.innerText.split(": ")[1];
-        openModal(`/static/${image_url}`);
+    const qr_image_url = "{{ qr_image_url }}";
+    if (qr_image_url) {
+        openModal(`/static/${qr_image_url}`);
     }
 }
+// window.onload = function() {
+//     const flash_message = document.querySelector('.flash');
+//     if (flash_message) {
+//         const image_url = flash_message.innerText.split(": ")[1];
+//         openModal(`/static/${image_url}`);
+//     }
+// }
 
 </script>
 </body>

@@ -1,8 +1,9 @@
-from flask import Flask, render_template, request, send_file, flash, redirect, url_for
-from qr_utils import validate_url, validate_file, validate_format, generate
-from dotenv import load_dotenv
+from flask      import Flask, render_template, request, send_file, flash
+from qr_utils   import validate_url, validate_file, validate_format, generate
+from dotenv     import load_dotenv
 import os
 import logging
+import threading
 
 # STARTUP & CONFIGURATION 
 ###----------------------->>>>>>>
@@ -24,7 +25,9 @@ logging.basicConfig(
 ROUTE:      '/'
 TEMPLATE:   index.html
 NAVLINK:    Tool
-PURPOSE:    index() renders the Tool homepage on GET, downloads a QR code on POST (submit button)
+PURPOSE:    index() renders the Tool page @click=navlink (GET)
+            downloads a QR code @click=submit            (POST)
+            preview QR code modal @click=preview         (POST)
 """ 
 @app.route("/", methods=["GET", "POST"])
 def index():
@@ -33,6 +36,7 @@ def index():
     url = ""
     file_name = ""
     export_format = ""
+    color = "default"
     qr_image_url = None
 
     # fetch user input from form on 'submit'
@@ -41,10 +45,11 @@ def index():
         url = request.form["url"]
         file_name = request.form["file-name"]
         export_format = request.form["export-format"]
+        color = request.form.get("color", "default")
 
         # validate user input, generate image, and instantiate QR code file
         if validate_url(url) and validate_file(file_name) and validate_format(export_format):
-            file_path = generate(url, file_name, export_format)
+            file_path = generate(url, file_name, export_format, color)
 
             # when submit button is clicked with valid user input
             if 'submit' in request.form:
@@ -53,22 +58,22 @@ def index():
                 return response
             
             # when preview button is clicked with valid user input
-            if 'preview' in request.form:
+            elif 'preview' in request.form:
 
                 if os.path.exists(file_path):
-                    flash(f'Preview: codes/{file_name}.{export_format.lower()}', 'info')
-                else:
-                    flash("Error generating QR code image.", 'danger')
-
-                return render_template(
-                    "index.html", 
-                    url=request.form["url"], 
-                    file_name=request.form["file-name"], 
-                    export_format=request.form["export-format"]
-                )
+                    threading.Timer(5.0, os.remove, [file_path]).start()
+                    # threading.Thread(target=lambda: (time.sleep(5), os.remove(file_path))).start()
+                    return render_template(
+                        "index.html", 
+                        url = request.form["url"], 
+                        file_name = request.form["file-name"], 
+                        export_format = request.form["export-format"],
+                        color = request.form["color"],
+                        qr_image_url = f'codes/{file_name}.{export_format.lower()}'
+                    )
 
         # validation fails, flash how-to message
-        if not (validate_url(url) and validate_file(file_name) and validate_format(export_format)):
+        else:
             flash("Please provide valid input for all fields.\nEnter a valid URL starting with http:// or https://, up to 512 characters.\nUse only letters, numbers, spaces, underscores, hyphens, and periods for the file name.")
 
     # if request.method="GET"
@@ -79,7 +84,7 @@ def index():
 ROUTE:      '/about'
 TEMPLATE:   about.html
 NAVLINK:    About
-PURPOSE:    about() renders the About page @click=navlink
+PURPOSE:    about() renders the About page @click=navlink (GET)
 """ 
 
 ###----------------------->>>>>>>
