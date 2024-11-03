@@ -5,6 +5,7 @@ body {
     background-position: center;
     background-repeat: no-repeat;
     background-blend-mode: lighten;
+    height: 100%;
 }
 body::before {
     content: '';
@@ -59,7 +60,8 @@ h1 {
     justify-content: space-between;
     margin: auto;
     padding: 16px;
-    width: 80%;
+    /* width: 80%; */
+    width: 1200px; 
     background-image: url('/static/concept-art/qr-pattern.png');
     background-size: cover;
     background-position: center;
@@ -67,11 +69,19 @@ h1 {
     background-color: rgba(254, 255, 255, 0.85);
     background-blend-mode: overlay;
 }
+@media (max-width: 1200px) {
+    .container {
+        transform: scale(calc(100vw / 1200));
+        transform-origin: top;
+        width: auto;
+    }
+}
 .form-container {
     float: left;
     margin-left: 32px;
     padding: 4px;
-    width: 40%;
+    /* width: 40%; */
+    width: 500px; /* Fixed width */
     background-color: rgba(189, 189, 189, .2);
     border-radius: 4px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
@@ -95,10 +105,33 @@ h1 {
     justify-content: flex-end;
     margin-right: 32px;
     padding: 4px;
-    width: 40%;
+    /* width: 40%; */
+    width: 500px; /* Fixed width */
     background-color: rgba(189, 189, 189, .2);
     border-radius: 4px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+}
+@media (max-width: 900px) {
+    .image-container {
+        display: none;
+    }
+    .form-container {
+        float: none;
+        margin: auto;
+        display: block;
+        width: 80%;
+    }
+}
+@media (min-width: 901px) {
+    .image-container {
+        display: flex;
+    }
+
+    .form-container {
+        float: left;
+        margin-left: 32px;
+        width: 500px;
+    }
 }
 .radio-row {
     display: flex;
@@ -110,6 +143,23 @@ h1 {
 .radio-row label {
     cursor: pointer;
     flex: 1;
+}
+@media (max-width: 600px) {
+    .radio-row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .radio-row input[type="radio"],
+    .radio-row label {
+        flex: 0 1 45%;
+        margin-bottom: 8px;
+    }
+    nav a {
+        padding: 8px 12px;
+        font-size: 0.8rem;
+    }
 }
 .button-container {
     display: flex;
@@ -137,8 +187,16 @@ h1 {
     font-family: monospace, 'Courier New', Courier;
     font-size: 1.125rem;
 }
+.ipad16 {
+    margin-bottom: 16px;
+}
 .pad16 {
     margin-bottom: 16px;
+    border-color: 1px 1px solid rgba(0, 0, 0, 0.5);
+    opacity: 1%;
+}
+.gap1 {
+    margin-bottom: 8px;
 }
 .guide-container {
     background-color: #272727;
@@ -175,24 +233,16 @@ h1 {
     height: 100%;
     overflow: auto;
     background-color: rgb(0,0,0);
-    background-color: rgba(0,0,0,0.4);
+    background-color: rgba(0,0,0,0.9);
 }
 .modal-content {
-    background-color: #fefefe;
+    background-color: rgba(255,255,255,0);
     margin: 15% auto;
     padding: 20px;
-    border: 1px solid #888;
     width: 80%;
+    width: 380px;
+    height: 420px;
 }
-.close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
-.close:hover,
-.close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
+.code {
+    border: 2px white dashed;
 }

@@ -26,7 +26,7 @@
                     type="text" 
                     id="url" 
                     name="url" 
-                    placeholder="http://qrork.com" 
+                    placeholder="http://qrork.app" 
                     value="{{ url }}" 
                     required
                 >
@@ -39,7 +39,7 @@
                     id="file-name" 
                     name="file-name" 
                     placeholder="QRORK-qrcode" 
-                    class="pad16" 
+                    class="ipad16" 
                     value="{{ file_name}}" 
                     required
                 >
@@ -114,8 +114,8 @@
                 </fieldset>
         
                 <div class="button-container">
-                    <input type="submit" name="submit" value="Submit" class="btn">
                     <input type="submit" name="preview" value="Preview" class="btn">
+                    <input type="submit" name="submit" value="Download" class="btn">
                     <input type="button" value="Clear" class="btn" onclick="clearForm()">
                 </div>
                 
@@ -129,14 +129,15 @@
                  width="100%"
             >
         </div>
-    </div>
+    </div> <!--end--container-->
 
     <!-- Footer How-To Guide -->
     <div class="guide-container">
         <div> 
             <p class="howto">
-                Enter a valid URL starting with http:// or https:// up to 512 characters<br>
-                Use only letters, numbers, spaces, underscores, hyphens, and periods for the file name
+                Enter a valid URL starting with http:// or https:// up to 512 characters.<br>
+                Use only letters, numbers, spaces, underscores, hyphens, and periods for the file name.<br>
+                To close a preview, click anywhere on the page, not-on the image.
             </p>
         </div>
         <div class="credits">
@@ -147,19 +148,23 @@
             </p>
         </div>
     </div>
+    <hr class="pad16">
+    <hr class="pad16">
+    <hr class="pad16">
+    <hr class="pad16">
 
     <!-- Preview Modal -->
     <div id="preview-modal" class="modal">
         <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <img id="preview_image" src="" alt="QR Code Preview" />
+            <img class="code" id="preview-image" src="" alt="QR Code Preview" />
         </div>
+        <p style="display:flex">Click off the preview to return to application</p>
     </div>
 
 <!-- JavaScript for App -->
 <script>
 
-// when clear button is clicked
+// When clear button is clicked
 function clearForm() {
     document.getElementById('url').value = '';
     document.getElementById('file-name').value = '';
@@ -170,12 +175,24 @@ function clearForm() {
     document.getElementById('default').checked = true;
 }
 
-// required for modal
+// Required for modal
 function openModal(image_url) {
     const modal = document.getElementById("preview-modal");
-    const previewImage = document.getElementById("preview_image");
-    previewImage.src = image_url; // Set the image source
+    const previewImage = document.getElementById("preview-image");
+    previewImage.src = image_url;
     modal.style.display = "block";
+
+    // modal.onclick = function(event) {
+    //     if (event.target === modal) {
+    //         closeModal();
+    //     }
+    // };
+
+    modal.addEventListener('click', function(event) {
+        if (event.target === modal) {
+            closeModal();
+        }
+    });
 }
 function closeModal() {
     const modal = document.getElementById("preview-modal");

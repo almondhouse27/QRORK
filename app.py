@@ -1,6 +1,7 @@
-from flask      import Flask, render_template, request, send_file, flash
-from qr_utils   import validate_url, validate_file, validate_format, generate
-from dotenv     import load_dotenv
+from flask          import Flask, render_template, request, send_file, flash
+from flask_caching  import Cache
+from dotenv         import load_dotenv
+from qr_utils       import validate_url, validate_file, validate_format, generate, delete_codes
 import os
 import logging
 import threading
@@ -10,6 +11,16 @@ import threading
 load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY')
+
+cache = Cache(app)
+cache_cleared = False
+@app.before_request
+def clear_cache():
+    global cache_cleared
+    if not cache_cleared:
+        cache.clear()
+        cache_cleared = True
+
 logging.basicConfig(
     level=logging.DEBUG,
     format='%(asctime)s - %(levelname)s - %(message)s',
@@ -18,6 +29,8 @@ logging.basicConfig(
         logging.StreamHandler()
     ]
 )
+
+threading.Thread(target=delete_codes, daemon=True).start()
 
 # ROUTING
 ###----------------------->>>>>>>
@@ -54,23 +67,19 @@ def index():
             # when submit button is clicked with valid user input
             if 'submit' in request.form:
                 response = send_file(file_path, as_attachment=True)
-                os.remove(file_path)
                 return response
             
             # when preview button is clicked with valid user input
             elif 'preview' in request.form:
 
-                if os.path.exists(file_path):
-                    threading.Timer(5.0, os.remove, [file_path]).start()
-                    # threading.Thread(target=lambda: (time.sleep(5), os.remove(file_path))).start()
-                    return render_template(
-                        "index.html", 
-                        url = request.form["url"], 
-                        file_name = request.form["file-name"], 
-                        export_format = request.form["export-format"],
-                        color = request.form["color"],
-                        qr_image_url = f'codes/{file_name}.{export_format.lower()}'
-                    )
+                return render_template(
+                    "index.html", 
+                    url = request.form["url"], 
+                    file_name = request.form["file-name"], 
+                    export_format = request.form["export-format"],
+                    color = request.form["color"],
+                    qr_image_url = f'codes/{file_name}.{export_format.lower()}'
+                )
 
         # validation fails, flash how-to message
         else:
