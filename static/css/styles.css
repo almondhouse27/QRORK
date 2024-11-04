@@ -53,6 +53,12 @@ h1 {
     margin-bottom: 16px;
     text-align: center;
 }
+@media (max-width: 600px) {
+    h1 {
+        font-size: 1.2rem;
+        margin-bottom: 12px;
+    }
+}
 .container {
     box-shadow: inset 1px 2px 1px 2px rgba(84, 84, 84, 0.84);
     border-radius: 6px;
@@ -111,7 +117,7 @@ h1 {
     border-radius: 4px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
 }
-@media (max-width: 900px) {
+@media (max-width: 950px) {
     .image-container {
         display: none;
     }
@@ -122,7 +128,7 @@ h1 {
         width: 80%;
     }
 }
-@media (min-width: 901px) {
+@media (min-width: 951px) {
     .image-container {
         display: flex;
     }
@@ -138,6 +144,11 @@ h1 {
     justify-content: space-between;
     margin: 8px;
     margin-right: 16px;
+}
+@media (max-width: 600px) {
+    .radio-row {
+        margin: 6px;
+    }
 }
 .radio-row input[type="radio"],
 .radio-row label {
@@ -187,6 +198,21 @@ h1 {
     font-family: monospace, 'Courier New', Courier;
     font-size: 1.125rem;
 }
+@media (max-width: 600px) {
+    .button-container input {
+        margin: 12px;
+    }
+    .btn {
+        height: 32px;
+        width: 82px;
+    }
+    .txt-lbl {
+        font-size: .9rem;
+    }
+    .sm-lbl {
+        font-size: .8rem;
+    }
+}
 .ipad16 {
     margin-bottom: 16px;
 }
@@ -211,15 +237,29 @@ h1 {
     padding-left: 32px;
 }
 .howto {
-    font-size: 1.11rem;
+    font-size: 1.05rem;
     letter-spacing: 2px;
-    text-align: center;
-    
+    text-align: center; 
+}
+@media (max-width: 950px) {
+    .howto {
+        font-size: 1rem;
+        letter-spacing: 1.5px;
+    }
 }
 .credits {
     letter-spacing: 1px;
     font-size: .7rem;
     text-align: center;
+}
+@media (max-width: 600px) {
+    .howto {
+        font-size: .9rem;
+        letter-spacing: 1px;
+    }
+    .credits {
+        font-size: .5rem;
+    }
 }
 
 /* MODAL */
@@ -246,3 +286,4 @@ h1 {
 .code {
     border: 2px white dashed;
 }
+

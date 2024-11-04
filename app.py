@@ -1,4 +1,4 @@
-from flask          import Flask, render_template, request, send_file, flash
+from flask          import Flask, render_template, request, send_file, flash, redirect, url_for
 from flask_caching  import Cache
 from dotenv         import load_dotenv
 from qr_utils       import validate_url, validate_file, validate_format, generate, delete_codes
@@ -25,7 +25,7 @@ logging.basicConfig(
     level=logging.DEBUG,
     format='%(asctime)s - %(levelname)s - %(message)s',
     handlers=[
-        logging.FileHandler("app.log"),
+        logging.FileHandler("app.log", mode='w'),
         logging.StreamHandler()
     ]
 )
@@ -94,7 +94,12 @@ ROUTE:      '/about'
 TEMPLATE:   about.html
 NAVLINK:    About
 PURPOSE:    about() renders the About page @click=navlink (GET)
-""" 
+"""
+@app.route('/about')
+def about():
+    flash('About page coming soon!')
+    return redirect(url_for('index'))
+
 
 ###----------------------->>>>>>>
 """
@@ -108,7 +113,7 @@ PURPOSE:    redirects to official Almond House Publishing store
 """
 ROUTE:      '/code'
 OFFSITE:    https://github.com/almondhouse27
-NAVLINK:    About
+NAVLINK:    Code
 PURPOSE:    redirects to QRORK github repository
 """ 
 

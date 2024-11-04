@@ -54,17 +54,17 @@
                         <input type="radio" id="png" name="export-format" value="PNG" 
                                {% if export_format == 'PNG' %}checked{% endif %} required
                         >
-                        <label for="png">PNG</label>
+                        <label class="sm-lbl" for="png">PNG</label>
                 
                         <input type="radio" id="jpeg" name="export-format" value="JPEG"
                                {% if export_format == 'JPEG' %}checked{% endif %}
                         >
-                        <label for="jpeg">JPEG</label>
+                        <label class="sm-lbl" for="jpeg">JPEG</label>
                 
                         <input type="radio" id="bmp" name="export-format" value="BMP"
                                {% if export_format == 'BMP' %}checked{% endif %}
                         >
-                        <label for="bmp">BMP</label>
+                        <label class="sm-lbl" for="bmp">BMP</label>
                     </div>
                 
                     <!-- Second row of radio buttons -->
@@ -72,17 +72,17 @@
                         <input type="radio" id="gif" name="export-format" value="GIF"
                                {% if export_format == 'GIF' %}checked{% endif %}
                         >
-                        <label for="gif">GIF</label>
+                        <label class="sm-lbl" for="gif">GIF</label>
                 
                         <input type="radio" id="tiff" name="export-format" value="TIFF"
                                {% if export_format == 'TIFF' %}checked{% endif %}
                         >
-                        <label for="tiff">TIFF</label>
+                        <label class="sm-lbl" for="tiff">TIFF</label>
                 
                         <input type="radio" id="webp" name="export-format" value="WEBP"
                                {% if export_format == 'WEBP' %}checked{% endif %}
                         >
-                        <label for="webp">WEBP</label>
+                        <label class="sm-lbl" for="webp">WEBP</label>
                     </div>
                 </fieldset>
 
@@ -94,29 +94,29 @@
                         <input type="radio" id="default" name="color" value="default" 
                                {% if color == 'default' %}checked{% endif %} checked
                         >
-                        <label for="default">DEFAULT</label>
+                        <label class="sm-lbl" for="default">DEFAULT</label>
                 
                         <input type="radio" id="invert" name="color" value="invert"
                                {% if color == 'invert' %}checked{% endif %}
                         >
-                        <label for="invert">INVERT</label>
+                        <label class="sm-lbl" for="invert">INVERT</label>
                 
                         <input type="radio" id="jungle" name="color" value="jungle"
                                {% if color == 'jungle' %}checked{% endif %}
                         >
-                        <label for="jungle">JUNGLE</label>
+                        <label class="sm-lbl" for="jungle">JUNGLE</label>
 
                         <input type="radio" id="bee" name="color" value="bee"
                                {% if color == 'bee' %}checked{% endif %}
                         >
-                        <label for="bee">BEE</label>
+                        <label class="sm-lbl" for="bee">BEE</label>
                     </div>
                 </fieldset>
         
                 <div class="button-container">
+                    <input type="button" value="Clear" class="btn" onclick="clearForm()">
                     <input type="submit" name="preview" value="Preview" class="btn">
                     <input type="submit" name="submit" value="Download" class="btn">
-                    <input type="button" value="Clear" class="btn" onclick="clearForm()">
                 </div>
                 
             </form>
@@ -161,6 +161,13 @@
         <p style="display:flex">Click off the preview to return to application</p>
     </div>
 
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <script>
+            alert("{{ messages[0] }}");
+        </script>
+    {% endif %}
+    {% endwith %}
 <!-- JavaScript for App -->
 <script>
 
