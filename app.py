@@ -97,8 +97,9 @@ PURPOSE:    about() renders the About page @click=navlink (GET)
 """
 @app.route('/about')
 def about():
-    flash('About page coming soon!')
-    return redirect(url_for('index'))
+    ##flash('About page coming soon!')
+    ##return redirect(url_for('index'))
+    return render_template("about.html")
 
 
 ###----------------------->>>>>>>
