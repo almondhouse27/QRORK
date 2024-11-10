@@ -61,7 +61,11 @@ def index():
         color = request.form.get("color", "default")
 
         # validate user input, generate image, and instantiate QR code file
-        if validate_url(url) and validate_file(file_name) and validate_format(export_format):
+        url_valid = validate_url(url)
+        file_valid = validate_file(file_name)
+        format_valid = validate_format(export_format)
+
+        if url_valid and file_valid and format_valid:
             file_path = generate(url, file_name, export_format, color)
 
             # when submit button is clicked with valid user input
@@ -83,8 +87,20 @@ def index():
 
         # validation fails, flash how-to message
         else:
-            flash("Please provide valid input for all fields.\nEnter a valid URL starting with http:// or https://, up to 512 characters.\nUse only letters, numbers, spaces, underscores, hyphens, and periods for the file name.")
+            if not url_valid:
+                flash("INVALID URL")
+            
+            if not file_valid:
+                flash("INVALID FILE NAME")
 
+            return render_template(
+                "index.html", 
+                url=url, 
+                file_name=file_name, 
+                export_format=export_format, 
+                color=color
+            )
+        
     # if request.method="GET"
     return render_template("index.html")
 

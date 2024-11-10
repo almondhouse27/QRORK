@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
+  <div class="body">
     <nav>
         <a href="/">Tool</a>
         <a href="/about">About</a>
@@ -14,6 +15,16 @@
         <a href="https://github.com/almondhouse27/QRORK" target="_blank" rel="noopener noreferrer">Code</a>
     </nav>
 
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="flash-messages">
+            {% for message in messages %}
+                <div class="flash-message">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    {% endwith %}
+    
     <div class="container">
 
         <!-- Form Floating Left -->
@@ -26,7 +37,7 @@
                     type="text" 
                     id="url" 
                     name="url" 
-                    placeholder="http://qrork.app" 
+                    placeholder="https://qrork.app" 
                     value="{{ url }}" 
                     required
                 >
@@ -148,12 +159,6 @@
             </p>
         </div>
     </div>
-    <hr class="pad16">
-    <hr class="pad16">
-    <hr class="pad16">
-    <hr class="pad16">
-    <hr class="pad16">
-    <hr class="pad16">
 
     <!-- Preview Modal -->
     <div id="preview-modal" class="modal">
@@ -162,16 +167,33 @@
         </div>
         <p style="display:flex">Click off the preview to return to application</p>
     </div>
+  </div>
 
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-        <script>
-            alert("{{ messages[0] }}");
-        </script>
-    {% endif %}
-    {% endwith %}
 <!-- JavaScript for App -->
 <script>
+
+window.onload = function() {
+    // Select all the flash messages
+    const flashMessages = document.querySelectorAll('.flash-message');
+
+    flashMessages.forEach(function(message) {
+        setTimeout(function() {
+            // Remove the flash message from the DOM after 3 seconds
+            message.remove(); // Remove the individual flash message element
+
+            // Check if the container is now empty and remove it
+            const flashContainer = document.querySelector('.flash-messages');
+            if (flashContainer && flashContainer.children.length === 0) {
+                flashContainer.remove(); // Remove the container if empty
+            }
+        }, 5000); // 3000ms = 3 seconds
+    });
+
+    const qr_image_url = "{{ qr_image_url }}";
+    if (qr_image_url) {
+        openModal(`/static/${qr_image_url}`);
+    }
+    };
 
 // When clear button is clicked
 function clearForm() {
@@ -191,35 +213,18 @@ function openModal(image_url) {
     previewImage.src = image_url;
     modal.style.display = "block";
 
-    // modal.onclick = function(event) {
-    //     if (event.target === modal) {
-    //         closeModal();
-    //     }
-    // };
-
     modal.addEventListener('click', function(event) {
         if (event.target === modal) {
             closeModal();
         }
     });
 }
+
+// Required for modal
 function closeModal() {
     const modal = document.getElementById("preview-modal");
     modal.style.display = "none";
 }
-window.onload = function() {
-    const qr_image_url = "{{ qr_image_url }}";
-    if (qr_image_url) {
-        openModal(`/static/${qr_image_url}`);
-    }
-}
-// window.onload = function() {
-//     const flash_message = document.querySelector('.flash');
-//     if (flash_message) {
-//         const image_url = flash_message.innerText.split(": ")[1];
-//         openModal(`/static/${image_url}`);
-//     }
-// }
 
 </script>
 </body>
