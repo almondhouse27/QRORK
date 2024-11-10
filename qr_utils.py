@@ -9,7 +9,7 @@ from PIL import Image
 DIR = os.path.join('static', 'codes')
 IMG_FORMATS = ['PNG', 'JPEG', 'BMP', 'GIF', 'TIFF', 'WEBP']
 
-###----------------------->>>>>>>
+
 # validates user input against regex for valid URL formats (starting with http:// or https://)
 def validate_url(url):
 
@@ -21,19 +21,19 @@ def validate_url(url):
     )
     return re.match(pattern, url) and len(url) <= 512
 
-###----------------------->>>>>>>
+
 # validates user input against regex for valid filename characters (letters, numbers, spaces, underscores, hyphens, and periods)
 def validate_file(file):
 
     return re.match(r'^[\w\-. ]+$', file) and len(file) > 0
 
-###----------------------->>>>>>>
+
 # validates user input against predefined QR code format options (IMG_FORMATS)
 def validate_format(format):
 
     return format.upper() in IMG_FORMATS
 
-###----------------------->>>>>>>
+
 # generates a qr code based on user inputs
 def generate(url, file_name, export_format, color='default'):
 
@@ -66,7 +66,7 @@ def generate(url, file_name, export_format, color='default'):
     logging.info("Generated QR code saved at: %s", file_path)
     return file_path
 
-###----------------------->>>>>>>
+
 # generates a qr code based on user inputs
 def delete_codes():
         

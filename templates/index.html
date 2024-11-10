@@ -9,10 +9,12 @@
 <body>
   <div class="body">
     <nav>
+        <img src="static/concept-art/comic-1-qr-rune.png" alt="" width="40px">
         <a href="/">Tool</a>
         <a href="/about">About</a>
         <!-- <a href="https://almondhousepublishing.com/store" target="_blank" rel="noopener noreferrer">Store</a> -->
         <a href="https://github.com/almondhouse27/QRORK" target="_blank" rel="noopener noreferrer">Code</a>
+        <img src="static/concept-art/comic-1-qr-rune.png" alt="" width="40px">
     </nav>
 
     {% with messages = get_flashed_messages() %}
@@ -152,11 +154,7 @@
             </p>
         </div>
         <div class="credits">
-            <p>
-                www.QRORK.app |
-                &copy;2024 Almond House Publishing, LLC | 
-                All rights reserved.
-            </p>
+            <p>www.QRORK.app | &copy;2024 Almond House Publishing, LLC | All rights reserved.</p>
         </div>
     </div>
 
@@ -173,20 +171,17 @@
 <script>
 
 window.onload = function() {
-    // Select all the flash messages
     const flashMessages = document.querySelectorAll('.flash-message');
 
     flashMessages.forEach(function(message) {
         setTimeout(function() {
-            // Remove the flash message from the DOM after 3 seconds
-            message.remove(); // Remove the individual flash message element
+            message.remove();
 
-            // Check if the container is now empty and remove it
             const flashContainer = document.querySelector('.flash-messages');
             if (flashContainer && flashContainer.children.length === 0) {
-                flashContainer.remove(); // Remove the container if empty
+                flashContainer.remove();
             }
-        }, 5000); // 3000ms = 3 seconds
+        }, 5000);
     });
 
     const qr_image_url = "{{ qr_image_url }}";

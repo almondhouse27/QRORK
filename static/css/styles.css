@@ -4,7 +4,7 @@ body {
     justify-content: center;
     align-items: center;
     background-color: rgba(86, 86, 86, 0.7);
-    background-image: url('/static/concept-art/jungle-texture.png');
+    background-image: url('/static/concept-art/bg-jungle-texture.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -44,12 +44,18 @@ nav a {
     margin-right: 6px;
     text-decoration: none;
     display: inline-block;
-    width: 60px;
+    /* width: 60px; */
 }
 nav a:hover {
     color: white;
     background-color: #454545;
     box-shadow: inset 2px 3px 2px #272727;
+}
+nav img {
+    vertical-align: middle;
+    display: inline-block;
+    height: 40px;
+
 }
 h1 {
     font-size: 1.6rem;
@@ -72,7 +78,7 @@ h1 {
     padding: 16px;
     gap: 16px;
     max-width: 1200px; 
-    background-image: url('/static/concept-art/qr-pattern.png');
+    background-image: url('/static/concept-art/bg-qr-pattern.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -145,43 +151,22 @@ h1 {
     .form-container {
         float: left;
         margin-left: 32px;
-        width: 500px;
+        max-width: 500px;
     }
 }
 .radio-row {
     display: flex;
     justify-content: space-between;
     margin: 8px;
-    margin-right: 16px;
-}
-@media (max-width: 600px) {
-    .radio-row {
-        margin: 6px;
-        margin-right: 12px;
-    }
+    margin-right: 24px;
+    gap: 1px;
 }
 .radio-row input[type="radio"],
 .radio-row label {
     cursor: pointer;
     flex: 1;
 }
-@media (max-width: 600px) {
-    .radio-row {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-    }
 
-    .radio-row input[type="radio"],
-    .radio-row label {
-        flex: 0 1 45%;
-        margin-bottom: 8px;
-    }
-    nav a {
-        padding: 8px 12px;
-        font-size: 0.8rem;
-    }
-}
 .button-container {
     display: flex;
     justify-content: space-between;
@@ -252,16 +237,16 @@ h1 {
     letter-spacing: 2px;
     text-align: center; 
 }
+.credits {
+    letter-spacing: 1px;
+    font-size: .7rem;
+    text-align: center;
+}
 @media (max-width: 950px) {
     .howto {
         font-size: 1rem;
         letter-spacing: 1.5px;
     }
-}
-.credits {
-    letter-spacing: 1px;
-    font-size: .7rem;
-    text-align: center;
 }
 @media (max-width: 600px) {
     .howto {
@@ -306,7 +291,7 @@ h1 {
     justify-content: center;
 }
 .bio-container img {
-    width: 60%;
+    max-width: 1000px;
     border-radius: 6px;
     box-shadow: inset 2px 2px 10px rgba(1, 0, 0, 0.4), inset -2px -2px 10px rgba(255, 255, 255, 0.3);
     transition: opacity 0.3s ease, filter 0.3s ease;
@@ -346,8 +331,54 @@ h1 {
      transform: translateX(-50%);
      z-index: 9999;
 }
-
 .flash-message {
     font-size: 16px;
     margin: 0;
+}
+
+
+/* MOBILE  600 PX */
+@media (max-width: 600px) {
+    nav a {
+        padding: 6px 10px;
+        font-size: 0.75rem;
+        letter-spacing: 2px;
+    }
+    .radio-row {
+        flex-wrap: nowrap;
+        justify-content: space-between;
+    }
+    .radio-row input[type="radio"],
+    .radio-row label {
+        flex: 0 1 45%;
+        margin-right: 4px;
+        display: inline-block;
+        vertical-align: middle;
+    }
+    body {
+        background-size: cover;
+        background-repeat: repeat-y;
+        height: auto; 
+    }
+    .button-container input {
+        margin: 8px;
+    }
+    .btn {
+        height: 30px;
+        width: 80px;
+        font-size: 0.85rem;
+    }
+    .guide-container {
+        margin-top: 16px;
+        padding: 8px;
+        text-align: center;
+    }
+    .container,
+    .form-container,
+    .guide-container,
+    .flash-messages {
+        margin: 0 auto;
+        padding: 8px;
+        max-width: 90%;
+    }
 }
