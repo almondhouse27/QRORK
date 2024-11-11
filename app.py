@@ -1,9 +1,9 @@
 from flask              import Flask, render_template, request, send_file, flash, redirect, url_for
 from flask_caching      import Cache
 from flask_limiter      import Limiter
-from flask_limiter.util import get_remote_address
+# from flask_limiter.util import get_remote_address
 from dotenv             import load_dotenv
-from qr_utils           import validate_url, validate_file, validate_format, generate, delete_codes
+from qr_utils           import validate_url, validate_file, validate_format, generate, delete_codes, client_ip
 import os
 import logging
 import threading
@@ -14,17 +14,23 @@ import threading
 load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY')
-
-limiter = Limiter(get_remote_address, app=app)
+app.config['CACHE_TYPE'] = 'SimpleCache'
 
 cache = Cache(app)
 cache_cleared = False
+
 @app.before_request
 def clear_cache():
     global cache_cleared
     if not cache_cleared:
         cache.clear()
         cache_cleared = True
+
+limiter = Limiter(
+    client_ip,
+    app=app,
+    storage_uri='memory://'
+)
 
 logging.basicConfig(
     level=logging.DEBUG,
@@ -158,4 +164,5 @@ PURPOSE:    redirects to QRORK github repository
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+
+    app.run(debug=False)

@@ -1,3 +1,4 @@
+from flask import request
 import logging
 import os
 import qrcode
@@ -7,6 +8,24 @@ import threading
 
 DIR = os.path.join('static', 'codes')
 IMG_FORMATS = ['PNG', 'JPEG', 'BMP', 'GIF', 'TIFF', 'WEBP']
+
+
+# fetch client ip for rate limiting
+def client_ip():
+
+    forwarded = request.headers.get('X-Forwarded-For')
+
+    if forwarded:
+
+        return forwarded.split(',')[0]
+    
+    return request.remote_addr
+
+
+# handles timeout exception to prevent hangup
+def timeout_handler(signum, frame):
+
+    raise Exception("QR code generation took too long")
 
 
 # validates user input against regex for valid URL formats (starting with http:// or https://)
@@ -31,12 +50,6 @@ def validate_file(file):
 def validate_format(format):
 
     return format.upper() in IMG_FORMATS
-
-
-# handles timeout exception to prevent hangup
-def timeout_handler(signum, frame):
-
-    raise Exception("QR code generation took too long")
 
 
 # generates a qr code based on user inputs
