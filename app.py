@@ -1,16 +1,21 @@
-from flask          import Flask, render_template, request, send_file, flash, redirect, url_for
-from flask_caching  import Cache
-from dotenv         import load_dotenv
-from qr_utils       import validate_url, validate_file, validate_format, generate, delete_codes
+from flask              import Flask, render_template, request, send_file, flash, redirect, url_for
+from flask_caching      import Cache
+from flask_limiter      import Limiter
+from flask_limiter.util import get_remote_address
+from dotenv             import load_dotenv
+from qr_utils           import validate_url, validate_file, validate_format, generate, delete_codes
 import os
 import logging
 import threading
+
 
 # STARTUP & CONFIGURATION 
 ###----------------------->>>>>>>
 load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY')
+
+limiter = Limiter(get_remote_address, app=app)
 
 cache = Cache(app)
 cache_cleared = False
@@ -32,6 +37,20 @@ logging.basicConfig(
 
 threading.Thread(target=delete_codes, daemon=True).start()
 
+# ERROR HANDLER
+###----------------------->>>>>>>
+@app.errorhandler(429)
+def ratelimit(error):
+
+    return render_template('ratelimit.html'), 429
+
+@app.route("/reset")
+def reset():
+
+    limiter.reset()
+    return redirect(url_for("index"))
+
+
 # ROUTING
 ###----------------------->>>>>>>
 """
@@ -43,6 +62,7 @@ PURPOSE:    index() renders the Tool page @click=navlink (GET)
             preview QR code modal @click=preview         (POST)
 """ 
 @app.route("/", methods=["GET", "POST"])
+@limiter.limit("10 per minute")
 def index():
 
     # initialize variables
@@ -104,6 +124,7 @@ def index():
     # if request.method="GET"
     return render_template("index.html")
 
+
 ###----------------------->>>>>>>
 """
 ROUTE:      '/about'
@@ -126,6 +147,7 @@ NAVLINK:    Store
 PURPOSE:    redirects to official Almond House Publishing store
 """ 
 
+
 ###----------------------->>>>>>>
 """
 ROUTE:      '/code'
@@ -133,6 +155,7 @@ OFFSITE:    https://github.com/almondhouse27
 NAVLINK:    Code
 PURPOSE:    redirects to QRORK github repository
 """ 
+
 
 if __name__ == "__main__":
     app.run(debug=True)

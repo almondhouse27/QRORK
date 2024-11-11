@@ -4,7 +4,6 @@ import qrcode
 import re
 import time
 import threading
-from PIL import Image
 
 DIR = os.path.join('static', 'codes')
 IMG_FORMATS = ['PNG', 'JPEG', 'BMP', 'GIF', 'TIFF', 'WEBP']
@@ -34,8 +33,18 @@ def validate_format(format):
     return format.upper() in IMG_FORMATS
 
 
+# handles timeout exception to prevent hangup
+def timeout_handler(signum, frame):
+
+    raise Exception("QR code generation took too long")
+
+
 # generates a qr code based on user inputs
 def generate(url, file_name, export_format, color='default'):
+
+    timeout = 10
+    timer = threading.Timer(timeout, timeout_handler)
+    timer.start()
 
     if not os.path.exists(DIR):
 
@@ -43,28 +52,37 @@ def generate(url, file_name, export_format, color='default'):
 
     file_path = f"{DIR}/{file_name}.{export_format.lower()}"
 
-    if color == "default":
-        img = qrcode.make(url)
-        
-    else:    
-        if color == "invert":
-            fore = "white"
-            back = "black"
-        elif color == "bee":
-            fore = "black"
-            back = "yellow"
-        elif color == "jungle":
-            fore = "darkgreen"
-            back = "lightgreen"
+    try:
 
-        qr = qrcode.QRCode()
-        qr.add_data(url)
-        qr.make(fit=True)
-        img = qr.make_image(fill_color=fore, back_color=back)
+        if color == "default":
+            img = qrcode.make(url)
+            
+        else:    
+            if color == "invert":
+                fore = "white"
+                back = "black"
+            elif color == "bee":
+                fore = "black"
+                back = "yellow"
+            elif color == "jungle":
+                fore = "darkgreen"
+                back = "lightgreen"
 
-    img.save(file_path, format=export_format.lower())
-    logging.info("Generated QR code saved at: %s", file_path)
-    return file_path
+            qr = qrcode.QRCode()
+            qr.add_data(url)
+            qr.make(fit=True)
+            img = qr.make_image(fill_color=fore, back_color=back)
+
+        img.save(file_path, format=export_format.lower())
+        logging.info("Generated QR code saved at: %s", file_path)
+        return file_path
+    
+    except Exception as e:
+        logging.error(f"Error generating QR code: {e}")
+        raise 
+    
+    finally:
+        timer.cancel()
 
 
 # generates a qr code based on user inputs
