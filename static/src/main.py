@@ -25,7 +25,7 @@ import re
 
 ###----------------------->>>>>>>
 # define constansts
-DIR = 'codes'
+DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'codes')
 IMG_FORMATS = ['PNG', 'JPEG', 'BMP', 'GIF', 'TIFF', 'WEBP']
 
 
